@@ -52,7 +52,7 @@ def write_imgFromUrl(imgs_url):
             imgs_file.append(file_path)
     return imgs_file; 
 
-def GetTextBookFromWeChat(url):
+def GetTextBookFromWeChat(url,fileName, bDelImg):
     #1.获得网站内容
     html = __getWebHtml(url)
     soup = BeautifulSoup(html, 'html.parser')
@@ -60,12 +60,13 @@ def GetTextBookFromWeChat(url):
     imgs_url = [imgs[i]['data-src'] for i in range(len(imgs))]
     imgs_file = write_imgFromUrl(imgs_url)
     #create one pdf
-    pdf_path = os.path.join('1.pdf')
+    pdf_path = os.path.join(fileName+'.pdf')
     images_to_pdf(imgs_file, pdf_path)
-    #删除图片
-    for img_file in imgs_file:
-        os.remove(img_file)
+    if bDelImg:
+        #删除图片
+        for img_file in imgs_file:
+            os.remove(img_file)
 
 if __name__ == "__main__":
     url="https://mp.weixin.qq.com/s/XYftHjVBbfr0DGYK-8TGQw"
-    GetTextBookFromWeChat(url)
+    GetTextBookFromWeChat(url,"English2Class3A", True)
